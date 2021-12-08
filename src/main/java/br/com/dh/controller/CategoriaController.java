@@ -31,33 +31,4 @@ public class CategoriaController {
         return ResponseEntity.ok(CategoriaDto.converter(categorias));
     }
     
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Optional<Contato>> getContactById(@PathVariable Integer id){
-//        return ResponseEntity.ok(service.getContact(id));
-//    }
-//
-//    @PostMapping
-//    public ResponseEntity<Contato> saveContact(@RequestBody @Valid Contato contato)  {
-//		List<Contato> contatos = service.searchByContato(contato.getNome(), contato.getSobrenome(), 
-//			contato.getDataNascimento(), contato.getApelido());
-//		if (!contatos.isEmpty()) {
-//			System.out.println("Cannot save duplicate contact.");
-//			return ResponseEntity.badRequest().build();
-//		}
-//    	
-//        Contato retorno = service.saveContact(contato);
-//        URI uri = UriComponentsBuilder.fromPath("contato/{id}").buildAndExpand(contato.getId()).toUri();
-//        return ResponseEntity.created(uri).body(retorno);
-//    }
-//    
-//	@DeleteMapping("/{id}")
-//	@Transactional
-//	public ResponseEntity<?> remover(@PathVariable Integer id) {
-//		Optional<Contato> optional = service.getContact(id);
-//		if (optional.isPresent()) {
-//			service.deleteById(id);
-//			return ResponseEntity.ok().build();
-//		}
-//		return ResponseEntity.notFound().build();
-//	}
 }
