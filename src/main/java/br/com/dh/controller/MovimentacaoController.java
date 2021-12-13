@@ -1,15 +1,28 @@
 package br.com.dh.controller;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.dh.model.Categoria;
 import br.com.dh.model.Movimentacao;
+import br.com.dh.model.dto.CategoriaDto;
 import br.com.dh.model.dto.MovimentacaoDto;
 import br.com.dh.services.MovimentacaoService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 //@Api(tags = "Movimentação")
 @RestController
@@ -29,21 +42,21 @@ public class MovimentacaoController {
         return ResponseEntity.ok(MovimentacaoDto.converter(movimentacao));
     }
     
-    /*@GetMapping("/{id}")
-    //@ApiOperation(value = "Lista a categoria buscada por id.")
-    public ResponseEntity<CategoriaDto> buscarPorId(@PathVariable Long id){
-    	Optional<Categoria> categoria = service.buscarPorId(id);
-		if (categoria.isPresent()) {
-			return ResponseEntity.ok(new CategoriaDto(categoria.get()));
+    @GetMapping("/{id}")
+    //@ApiOperation(value = "Lista a movimentação buscada por id.")
+    public ResponseEntity<MovimentacaoDto> buscarPorId(@PathVariable Long id){
+    	Optional<Movimentacao> movimentacao = service.buscarPorId(id);
+		if (movimentacao.isPresent()) {
+			return ResponseEntity.ok(new MovimentacaoDto(movimentacao.get()));
 		}
 		return ResponseEntity.notFound().build();
     }
     
 	@DeleteMapping("/{id}")
 	@Transactional
-    //@ApiOperation(value = "Exclui uma categoria.")
+    //@ApiOperation(value = "Exclui uma movimentação.")
 	public ResponseEntity<?> remover(@PathVariable Long id) {
-		Optional<Categoria> optional = service.buscarPorId(id);
+		Optional<Movimentacao> optional = service.buscarPorId(id);
 		if (optional.isPresent()) {
 			service.excluir(id);
 			return ResponseEntity.ok().build();
@@ -51,7 +64,7 @@ public class MovimentacaoController {
 		return ResponseEntity.notFound().build();
 	}
     
-    @PostMapping
+    /*@PostMapping
     //@ApiOperation(value = "Salva uma categoria.")
     public ResponseEntity<Categoria> salvar(@RequestBody @Valid CategoriaDto categoriaInput, UriComponentsBuilder uriBuilder)  {
     	Optional<Categoria> categoria = service.buscarPorNome(categoriaInput.getNome()); 
