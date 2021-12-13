@@ -2,9 +2,12 @@ package br.com.dh.model.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.dh.enumerations.TipoMovimentacao;
 import br.com.dh.model.Categoria;
+import br.com.dh.model.Movimentacao;
 
 public class MovimentacaoDto {
 	
@@ -24,6 +27,14 @@ public class MovimentacaoDto {
 		this.valor = valor;
 		this.dataCriacao = LocalDate.now();
 		this.categoria = categoria;
+	}
+	
+	public MovimentacaoDto(Movimentacao movimentacao) {
+		this.tipo = movimentacao.getTipo();
+		this.descricao = movimentacao.getDescricao();
+		this.valor = movimentacao.getValor();
+		this.dataCriacao = movimentacao.getDataCriacao();
+		this.categoria = movimentacao.getCategoria();
 	}
 
 	public TipoMovimentacao getTipo() {
@@ -64,6 +75,11 @@ public class MovimentacaoDto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public static List<MovimentacaoDto> converter(List<Movimentacao> movimentacoes) {
+		return movimentacoes.stream().map(MovimentacaoDto::new).collect(Collectors.toList());
+
 	}
 	
 }

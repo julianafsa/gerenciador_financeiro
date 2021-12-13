@@ -28,12 +28,15 @@ public class Movimentacao {
 	
 	private BigDecimal valor = BigDecimal.ZERO;
 	
-	@Column(name = "data_criacao", nullable = false)
+	@Column(name = "data_criacao")
 	private LocalDate dataCriacao = LocalDate.now();
 	
 	@ManyToOne
 	@JoinColumn(name = "categoria_fk")
 	private Categoria categoria;
+	
+	public Movimentacao() {
+	}
 
 	public Movimentacao(TipoMovimentacao tipo, String descricao, BigDecimal valor, Categoria categoria) {
 		this.tipo = tipo;

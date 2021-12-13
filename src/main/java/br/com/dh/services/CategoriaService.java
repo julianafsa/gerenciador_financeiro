@@ -14,5 +14,4 @@ public interface CategoriaService {
 	void excluir(Long id);
 	Categoria salvar(Categoria categoria);
 
-
 }

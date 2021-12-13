@@ -1,48 +1,35 @@
 package br.com.dh.controller;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.dh.model.Categoria;
-import br.com.dh.model.dto.CategoriaDto;
-import br.com.dh.services.CategoriaService;
-//import io.swagger.annotations.Api;
+import br.com.dh.model.Movimentacao;
+import br.com.dh.model.dto.MovimentacaoDto;
+import br.com.dh.services.MovimentacaoService;
 
-//@Api(tags = "Categoria")
+//@Api(tags = "Movimentação")
 @RestController
-@RequestMapping("/categorias")
-public class CategoriaController {
+@RequestMapping("/movimentacoes")
+public class MovimentacaoController {
 
-    private CategoriaService service;
+    private MovimentacaoService service;
 
-    public CategoriaController(CategoriaService service) {
+    public MovimentacaoController(MovimentacaoService service) {
         this.service = service;
     }
 
     @GetMapping
-    //@ApiOperation(value = "Lista todas as categorias.")
-    public ResponseEntity<List<CategoriaDto>> buscarTodos() {
-    	List<Categoria> categorias = service.buscarTodos();
-        return ResponseEntity.ok(CategoriaDto.converter(categorias));
+    //@ApiOperation(value = "Lista todas as movimentações.")
+    public ResponseEntity<List<MovimentacaoDto>> buscarTodos() {
+    	List<Movimentacao> movimentacao = service.buscarTodos();
+        return ResponseEntity.ok(MovimentacaoDto.converter(movimentacao));
     }
     
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     //@ApiOperation(value = "Lista a categoria buscada por id.")
     public ResponseEntity<CategoriaDto> buscarPorId(@PathVariable Long id){
     	Optional<Categoria> categoria = service.buscarPorId(id);
@@ -88,6 +75,6 @@ public class CategoriaController {
 			return ResponseEntity.ok(new CategoriaDto(categoria));
 		}
 		return ResponseEntity.notFound().build();
-	}
+	}*/
     
 }
