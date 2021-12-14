@@ -155,13 +155,35 @@ public class MovimentacaoController {
     }
     
     // Balanços
+    @GetMapping("/gastos/categoria")
+    //@ApiOperation(value = "Relatorio de gastos por dia por categoria.")
+    public ResponseEntity<RelatorioGastoDto> relatorioGastoDiaCategoria(
+    	@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+    	@RequestParam("categoria") String categoria) {
+    	RelatorioGastoDto balanco = service.relatorioGastoDiaCategoria(date, categoria);
+        return ResponseEntity.ok(balanco);
+    }
+    
+    // Balanços
     @GetMapping("/gastos/periodo")
-    //@ApiOperation(value = "Relatorio de gastos por dia.")
-    public ResponseEntity<RelatorioGastoDto> relatorioGastoDia(
+    //@ApiOperation(value = "Relatorio de gastos por dia de início e de fim.")
+    public ResponseEntity<RelatorioGastoDto> relatorioGastoPeriodo(
     	//@RequestParam("localDate") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate localDate) {
     	@RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
     	@RequestParam("dataFim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
-    	RelatorioGastoDto balanco = service.relatorioGastoDia(dataInicio, dataFim);
+    	RelatorioGastoDto balanco = service.relatorioGastoPeriodo(dataInicio, dataFim);
+        return ResponseEntity.ok(balanco);
+    }
+    
+    // Balanços
+    @GetMapping("/gastos/periodo/categoria")
+    //@ApiOperation(value = "Relatorio de gastos por dia de início e de fim e por categoria.")
+    public ResponseEntity<RelatorioGastoDto> relatorioGastoPeriodoCategoria(
+    	//@RequestParam("localDate") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate localDate) {
+    	@RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+    	@RequestParam("dataFim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+    	@RequestParam("categoria") String categoria) {
+    	RelatorioGastoDto balanco = service.relatorioGastoPeriodoCategoria(dataInicio, dataFim, categoria);
         return ResponseEntity.ok(balanco);
     }
     

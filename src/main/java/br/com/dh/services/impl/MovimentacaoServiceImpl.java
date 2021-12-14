@@ -144,10 +144,42 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 		relatorio.setDataFim(data);
 		return relatorio;
 	}
+	
+	@Override
+	public RelatorioGastoDto relatorioGastoDiaCategoria(LocalDate data, String id_categoria) {
+		List<Movimentacao> movimentacoes = this.repository.relatorioGastoDiaCategoria(data, id_categoria);
+		BigDecimal somaSaidas = BigDecimal.ZERO;
+		for (Iterator<Movimentacao> iterator = movimentacoes.iterator(); iterator.hasNext();) {
+			Movimentacao movimentacao = (Movimentacao) iterator.next();
+			somaSaidas = somaSaidas.add(movimentacao.getValor());
+		}
+		RelatorioGastoDto relatorio = new RelatorioGastoDto();
+		relatorio.setMovimentacoes(movimentacoes);
+		relatorio.setValorTotalSaidas(somaSaidas);
+		relatorio.setDataInicio(data);
+		relatorio.setDataFim(data);
+		return relatorio;
+	}
 
 	@Override
-	public RelatorioGastoDto relatorioGastoDia(LocalDate dataInicio, LocalDate dataFim) {
-		List<Movimentacao> movimentacoes = this.repository.relatorioGastoDia(dataInicio, dataFim);
+	public RelatorioGastoDto relatorioGastoPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+		List<Movimentacao> movimentacoes = this.repository.relatorioGastoPeriodo(dataInicio, dataFim);
+		BigDecimal somaSaidas = BigDecimal.ZERO;
+		for (Iterator<Movimentacao> iterator = movimentacoes.iterator(); iterator.hasNext();) {
+			Movimentacao movimentacao = (Movimentacao) iterator.next();
+			somaSaidas = somaSaidas.add(movimentacao.getValor());
+		}
+		RelatorioGastoDto relatorio = new RelatorioGastoDto();
+		relatorio.setMovimentacoes(movimentacoes);
+		relatorio.setValorTotalSaidas(somaSaidas);
+		relatorio.setDataInicio(dataInicio);
+		relatorio.setDataFim(dataFim);
+		return relatorio;
+	}
+	
+	@Override
+	public RelatorioGastoDto relatorioGastoPeriodoCategoria(LocalDate dataInicio, LocalDate dataFim, String id_categoria) {
+		List<Movimentacao> movimentacoes = this.repository.relatorioGastoPeriodoCategoria(dataInicio, dataFim, id_categoria);
 		BigDecimal somaSaidas = BigDecimal.ZERO;
 		for (Iterator<Movimentacao> iterator = movimentacoes.iterator(); iterator.hasNext();) {
 			Movimentacao movimentacao = (Movimentacao) iterator.next();

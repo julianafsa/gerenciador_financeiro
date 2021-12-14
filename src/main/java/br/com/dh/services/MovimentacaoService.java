@@ -25,6 +25,8 @@ public interface MovimentacaoService {
 	BalancoSaidasDto buscarBalancoSaidas();
 	
 	RelatorioGastoDto relatorioGastoDia(LocalDate data);
-	RelatorioGastoDto relatorioGastoDia(LocalDate dataInicio, LocalDate dataFim);
+    RelatorioGastoDto relatorioGastoDiaCategoria(LocalDate data_criacao, String id_categoria);
+	RelatorioGastoDto relatorioGastoPeriodo(LocalDate dataInicio, LocalDate dataFim);
+	RelatorioGastoDto relatorioGastoPeriodoCategoria(LocalDate dataInicio, LocalDate dataFim, String id_categoria);
 
 }

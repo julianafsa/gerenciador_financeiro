@@ -35,9 +35,22 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
 	@Query(value = relatorioGastoDia, nativeQuery = true)
     List<Movimentacao> relatorioGastoDia(@Param("data_criacao") LocalDate data_criacao);
 	
-	String relatorioGastoDiaInicioFim = "SELECT * FROM Movimentacao WHERE tipo = 0 "
+	String relatorioGastoDiaCategoria = "SELECT * FROM Movimentacao WHERE "
+			+ "tipo = 0 "
+			+ "and data_criacao=:data_criacao "
+			+ "and categoria_fk=:id_categoria";
+	@Query(value = relatorioGastoDiaCategoria, nativeQuery = true)
+    List<Movimentacao> relatorioGastoDiaCategoria(@Param("data_criacao") LocalDate data_criacao, @Param("id_categoria") String id_categoria);
+	
+	String relatorioGastoPeriodo = "SELECT * FROM Movimentacao WHERE tipo = 0 "
 			+ "and (data_criacao)>=:data_inicio and (data_criacao)<=:data_fim";
-	@Query(value = relatorioGastoDiaInicioFim, nativeQuery = true)
-    List<Movimentacao> relatorioGastoDia(@Param("data_inicio") LocalDate data_inicio, @Param("data_fim") LocalDate data_fim);
+	@Query(value = relatorioGastoPeriodo, nativeQuery = true)
+    List<Movimentacao> relatorioGastoPeriodo(@Param("data_inicio") LocalDate data_inicio, @Param("data_fim") LocalDate data_fim);
+	
+	String relatorioGastoPeriodoCategoria = "SELECT * FROM Movimentacao WHERE tipo = 0 "
+			+ "and (data_criacao)>=:data_inicio and (data_criacao)<=:data_fim "
+			+ "and categoria_fk=:id_categoria";
+	@Query(value = relatorioGastoPeriodoCategoria, nativeQuery = true)
+    List<Movimentacao> relatorioGastoPeriodoCategoria(@Param("data_inicio") LocalDate data_inicio, @Param("data_fim") LocalDate data_fim, @Param("id_categoria") String id_categoria);
 	
 }
