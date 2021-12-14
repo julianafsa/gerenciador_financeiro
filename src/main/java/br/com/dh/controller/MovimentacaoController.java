@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,8 +23,7 @@ import br.com.dh.model.Movimentacao;
 import br.com.dh.model.dto.MovimentacaoDto;
 import br.com.dh.services.CategoriaService;
 import br.com.dh.services.MovimentacaoService;
-import io.swagger.annotations.Api;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+//import io.swagger.annotations.Api;
 
 //@Api(tags = "Movimentação")
 @RestController
@@ -72,12 +72,12 @@ public class MovimentacaoController {
     //@ApiOperation(value = "Salva uma movimentação.")
     public ResponseEntity<Movimentacao> salvar(@RequestBody @Valid MovimentacaoDto input, UriComponentsBuilder uriBuilder)  {
     	Optional<Categoria> categoria = categoriaService.buscarPorId(Long.parseLong(input.getIdCategoria())); 
-		if (categoria.isPresent()) {
+		if (!categoria.isPresent()) {
 			System.out.println("Categoria " + input.getIdCategoria() + " não encontrada.");
 			return ResponseEntity.notFound().build();
 		}
-    	
-		Movimentacao movimentacaoSalva = service.salvar(input.converter(categoria.get()));
+    	Movimentacao mov = input.converter(categoria.get());
+		Movimentacao movimentacaoSalva = service.salvar(mov);
 		URI uri = UriComponentsBuilder.fromPath("categoria").buildAndExpand(movimentacaoSalva.getId()).toUri();
 		return ResponseEntity.created(uri).body(movimentacaoSalva);			
     }
