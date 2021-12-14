@@ -35,4 +35,9 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
 	@Query(value = relatorioGastoDia, nativeQuery = true)
     List<Movimentacao> relatorioGastoDia(@Param("data_criacao") LocalDate data_criacao);
 	
+	String relatorioGastoDiaInicioFim = "SELECT * FROM Movimentacao WHERE tipo = 0 "
+			+ "and (data_criacao)>=:data_inicio and (data_criacao)<=:data_fim";
+	@Query(value = relatorioGastoDiaInicioFim, nativeQuery = true)
+    List<Movimentacao> relatorioGastoDia(@Param("data_inicio") LocalDate data_inicio, @Param("data_fim") LocalDate data_fim);
+	
 }

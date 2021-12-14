@@ -149,8 +149,19 @@ public class MovimentacaoController {
     //@ApiOperation(value = "Relatorio de gastos por dia.")
     public ResponseEntity<RelatorioGastoDto> relatorioGastoDia(
     	//@RequestParam("localDate") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate localDate) {
-    	@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date ) {
+    	@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
     	RelatorioGastoDto balanco = service.relatorioGastoDia(date);
+        return ResponseEntity.ok(balanco);
+    }
+    
+    // Balanços
+    @GetMapping("/gastos/periodo")
+    //@ApiOperation(value = "Relatorio de gastos por dia.")
+    public ResponseEntity<RelatorioGastoDto> relatorioGastoDia(
+    	//@RequestParam("localDate") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate localDate) {
+    	@RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+    	@RequestParam("dataFim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+    	RelatorioGastoDto balanco = service.relatorioGastoDia(dataInicio, dataFim);
         return ResponseEntity.ok(balanco);
     }
     
