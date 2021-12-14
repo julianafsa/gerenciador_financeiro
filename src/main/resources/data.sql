@@ -18,8 +18,9 @@ INSERT INTO movimentacao (tipo, descricao, valor, categoria_fk, data_criacao) VA
 ('0', 'Bebidas', '950.00', '1', '2021-12-05'),
 ('0', 'Colégio Santo Agostinho', '2500.00', '2', '2021-12-05'),
 ('0', 'Visita Cristo Redentor', '100.00', '4', '2021-12-10'),
+('0', 'Play no shopping', '120.00', '3', '2021-12-10'),
 ('0', 'Roupas para Natal', '300.00', '5', '2021-12-11'),
-('0', 'Sapatos para Natal', '120.00', '5', '2021-12-16'),
+('0', 'Sapatos para Natal', '120.00', '5', '2021-12-14'),
 
 ('1', 'Salário', '10000.00', '6', '2021-12-01'),
 ('1', 'Aluguéis casas', '3500.00', '7', '2021-12-10'),

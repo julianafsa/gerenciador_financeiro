@@ -1,5 +1,6 @@
 package br.com.dh.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,6 +14,11 @@ import br.com.dh.model.Movimentacao;
 
 @Repository
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long> {
+	
+	String querySum = "SELECT sum(valor) FROM Movimentacao where categoria_fk=:id_categoria "
+			+ "and data_criacao>=:data_inicio and data_criacao<=:data_fim";
+	@Query(value = querySum, nativeQuery = true)
+    BigDecimal buscarGastoTotalPorCategoria(@Param("data_inicio") LocalDate data_inicio, @Param("data_fim") LocalDate data_fim, @Param("id_categoria") String id_categoria);
 	
 	String query = "SELECT m FROM Movimentacao m";
 	@Query(value = query, nativeQuery = false)

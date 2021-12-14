@@ -16,7 +16,9 @@ import br.com.dh.model.dto.BalancoSaidasDto;
 import br.com.dh.model.dto.RelatorioGastoDto;
 import br.com.dh.repository.MovimentacaoRepository;
 import br.com.dh.services.MovimentacaoService;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 public class MovimentacaoServiceImpl implements MovimentacaoService {
 	
@@ -57,6 +59,29 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
 	@Override
 	public Movimentacao salvar(Movimentacao movimentacao) {
+        LocalDate dataFim = movimentacao.getDataCriacao();
+        LocalDate dataInicio = dataFim.withDayOfMonth(1);
+
+		BigDecimal limiteMensal = movimentacao.getCategoria().getLimiteMensal();
+		
+		// Se o limite mensal é zero, significa que não há limite para aquela categoria
+		if (limiteMensal.compareTo(BigDecimal.ZERO) == 1) {
+			String id_categoria = movimentacao.getCategoria().getId().toString();
+			BigDecimal gastoTotalLazer = repository.buscarGastoTotalPorCategoria(dataInicio, dataFim, id_categoria);
+
+			BigDecimal novoGasto = movimentacao.getValor();
+			BigDecimal soma = gastoTotalLazer.add(novoGasto);
+			Integer compara = soma.compareTo(limiteMensal);
+			if (compara >= 1) {
+				System.out.println("Não é possível gastar mais com essa categoria. ");
+				System.out.println("Gasto atual para esta categoria: " + gastoTotalLazer.toString());
+				System.out.println("Limite: " + limiteMensal.toString());
+				System.out.println("Novo gasto: " + novoGasto.toString());
+				System.out.println("Gasto atual + novo gasto: " + soma.toString());
+				return null;
+			}
+		}
+
 		return this.repository.save(movimentacao);
 	}
 	

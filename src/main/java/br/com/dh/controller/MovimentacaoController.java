@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.dh.config.validacao.MyException;
 import br.com.dh.enumerations.TipoMovimentacao;
 import br.com.dh.model.Categoria;
 import br.com.dh.model.Movimentacao;
@@ -78,7 +79,7 @@ public class MovimentacaoController {
     
     @PostMapping
     //@ApiOperation(value = "Salva uma movimentação.")
-    public ResponseEntity<Movimentacao> salvar(@RequestBody @Valid MovimentacaoDto input, UriComponentsBuilder uriBuilder)  {
+    public ResponseEntity<Object> salvar(@RequestBody @Valid MovimentacaoDto input, UriComponentsBuilder uriBuilder) throws MyException  {
     	Optional<Categoria> categoria = categoriaService.buscarPorId(Long.parseLong(input.getIdCategoria())); 
 		if (!categoria.isPresent()) {
 			System.out.println("Categoria " + input.getIdCategoria() + " não encontrada.");
@@ -86,6 +87,10 @@ public class MovimentacaoController {
 		}
     	Movimentacao mov = input.converter(categoria.get());
 		Movimentacao movimentacaoSalva = service.salvar(mov);
+		if (movimentacaoSalva == null) {
+			String body = "Não é possível adicionar essa movimentação. Irá ultrapassar o limite máximo  para essa categoria.";
+			throw new MyException(mov, body);
+		}
 		URI uri = UriComponentsBuilder.fromPath("categoria").buildAndExpand(movimentacaoSalva.getId()).toUri();
 		return ResponseEntity.created(uri).body(movimentacaoSalva);			
     }
