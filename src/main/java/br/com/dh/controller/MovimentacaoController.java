@@ -32,9 +32,10 @@ import br.com.dh.model.dto.MovimentacaoDto;
 import br.com.dh.model.dto.RelatorioGastoDto;
 import br.com.dh.services.CategoriaService;
 import br.com.dh.services.MovimentacaoService;
-//import io.swagger.annotations.Api;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
-//@Api(tags = "Movimentação")
+@Api(tags = "Movimentação")
 @RestController
 @RequestMapping("/movimentacoes")
 public class MovimentacaoController {
@@ -49,14 +50,14 @@ public class MovimentacaoController {
     }
 
     @GetMapping
-    //@ApiOperation(value = "Lista todas as movimentações.")
+    @ApiOperation(value = "Lista todas as movimentações.")
     public ResponseEntity<List<MovimentacaoDto>> buscarTodos() {
     	List<Movimentacao> movimentacao = service.buscarTodos();
         return ResponseEntity.ok(MovimentacaoDto.converter(movimentacao));
     }
     
     @GetMapping("/{id}")
-    //@ApiOperation(value = "Lista a movimentação buscada por id.")
+    @ApiOperation(value = "Lista a movimentação buscada por id.")
     public ResponseEntity<MovimentacaoDto> buscarPorId(@PathVariable Long id){
     	Optional<Movimentacao> movimentacao = service.buscarPorId(id);
 		if (movimentacao.isPresent()) {
@@ -67,7 +68,7 @@ public class MovimentacaoController {
     
 	@DeleteMapping("/{id}")
 	@Transactional
-    //@ApiOperation(value = "Exclui uma movimentação.")
+    @ApiOperation(value = "Exclui uma movimentação.")
 	public ResponseEntity<?> remover(@PathVariable Long id) {
 		Optional<Movimentacao> optional = service.buscarPorId(id);
 		if (optional.isPresent()) {
@@ -78,7 +79,7 @@ public class MovimentacaoController {
 	}
     
     @PostMapping
-    //@ApiOperation(value = "Salva uma movimentação.")
+    @ApiOperation(value = "Salva uma movimentação se estiver dentro do limite mensal da categoria.")
     public ResponseEntity<Object> salvar(@RequestBody @Valid MovimentacaoDto input, UriComponentsBuilder uriBuilder) throws MyException  {
     	Optional<Categoria> categoria = categoriaService.buscarPorId(Long.parseLong(input.getIdCategoria())); 
 		if (!categoria.isPresent()) {
@@ -97,7 +98,7 @@ public class MovimentacaoController {
     
     @PutMapping("/{id}")
 	@Transactional
-    //@ApiOperation(value = "Altera uma movimentação.")
+    @ApiOperation(value = "Altera uma movimentação.")
 	public ResponseEntity<MovimentacaoDto> atualizar(@PathVariable Long id, @RequestBody @Valid MovimentacaoDto form) {
 		Optional<Movimentacao> optional = service.buscarPorId(id);
 		if (optional.isPresent()) {
@@ -111,7 +112,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/balanco")
-    //@ApiOperation(value = "Lista todas as entradas ou todas as saídas.")
+    @ApiOperation(value = "Lista todas as movimentações: entradas e saídas.")
     public ResponseEntity<BalancoDto> buscarBalanco() {
     	BalancoDto movimentacao = service.buscarBalanco();
         return ResponseEntity.ok(movimentacao);
@@ -119,7 +120,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/balanco/{tipo}")
-    //@ApiOperation(value = "Lista todas as entradas ou saídas.")
+    @ApiOperation(value = "Lista todas as entradas ou saídas. 0 para DESPESA e 1 para RECEITA")
     public ResponseEntity<BalancoDto> buscarBalanco(@PathVariable String tipo) {
     	TipoMovimentacao tipoInput = TipoMovimentacao.DESPESA;
     	if (tipo.equals("0")) {
@@ -133,7 +134,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/balanco/entradas")
-    //@ApiOperation(value = "Lista todas as entradas.")
+    @ApiOperation(value = "Lista todas as entradas.")
     public ResponseEntity<BalancoEntradasDto> buscarBalancoEntradas() {
     	BalancoEntradasDto balanco = service.buscarBalancoEntradas();
         return ResponseEntity.ok(balanco);
@@ -141,7 +142,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/balanco/saidas")
-    //@ApiOperation(value = "Lista todas as entradas.")
+    @ApiOperation(value = "Lista todas as saídas.")
     public ResponseEntity<BalancoSaidasDto> buscarBalancoSaidas() {
     	BalancoSaidasDto balanco = service.buscarBalancoSaidas();
         return ResponseEntity.ok(balanco);
@@ -151,7 +152,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/gastos")
-    //@ApiOperation(value = "Relatorio de gastos por dia.")
+    @ApiOperation(value = "Relatorio de gastos por um determinado dia.")
     public ResponseEntity<RelatorioGastoDto> relatorioGastoDia(
     	//@RequestParam("localDate") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate localDate) {
     	@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
@@ -161,7 +162,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/gastos/categoria")
-    //@ApiOperation(value = "Relatorio de gastos por dia por categoria.")
+    @ApiOperation(value = "Relatorio de gastos por um determinado dia e por categoria.")
     public ResponseEntity<RelatorioGastoDto> relatorioGastoDiaCategoria(
     	@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
     	@RequestParam("categoria") String categoria) {
@@ -171,7 +172,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/gastos/periodo")
-    //@ApiOperation(value = "Relatorio de gastos por dia de início e de fim.")
+    @ApiOperation(value = "Relatorio de gastos por um período (dia de início e de fim).")
     public ResponseEntity<RelatorioGastoDto> relatorioGastoPeriodo(
     	//@RequestParam("localDate") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate localDate) {
     	@RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
@@ -182,7 +183,7 @@ public class MovimentacaoController {
     
     // Balanços
     @GetMapping("/gastos/periodo/categoria")
-    //@ApiOperation(value = "Relatorio de gastos por dia de início e de fim e por categoria.")
+    @ApiOperation(value = "Relatorio de gastos por perídodo (dia de início e de fim) e por categoria.")
     public ResponseEntity<RelatorioGastoDto> relatorioGastoPeriodoCategoria(
     	//@RequestParam("localDate") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate localDate) {
     	@RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,

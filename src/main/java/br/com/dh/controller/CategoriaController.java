@@ -21,9 +21,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.dh.model.Categoria;
 import br.com.dh.model.dto.CategoriaDto;
 import br.com.dh.services.CategoriaService;
-//import io.swagger.annotations.Api;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
-//@Api(tags = "Categoria")
+@Api(tags = "Categoria")
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {
@@ -35,14 +36,14 @@ public class CategoriaController {
     }
 
     @GetMapping
-    //@ApiOperation(value = "Lista todas as categorias.")
+    @ApiOperation(value = "Lista todas as categorias.")
     public ResponseEntity<List<CategoriaDto>> buscarTodos() {
     	List<Categoria> categorias = service.buscarTodos();
         return ResponseEntity.ok(CategoriaDto.converter(categorias));
     }
     
     @GetMapping("/{id}")
-    //@ApiOperation(value = "Lista a categoria buscada por id.")
+    @ApiOperation(value = "Lista a categoria buscada por id.")
     public ResponseEntity<CategoriaDto> buscarPorId(@PathVariable Long id){
     	Optional<Categoria> categoria = service.buscarPorId(id);
 		if (categoria.isPresent()) {
@@ -53,7 +54,7 @@ public class CategoriaController {
     
 	@DeleteMapping("/{id}")
 	@Transactional
-    //@ApiOperation(value = "Exclui uma categoria.")
+    @ApiOperation(value = "Exclui uma categoria.")
 	public ResponseEntity<?> remover(@PathVariable Long id) {
 		Optional<Categoria> optional = service.buscarPorId(id);
 		if (optional.isPresent()) {
@@ -64,7 +65,7 @@ public class CategoriaController {
 	}
     
     @PostMapping
-    //@ApiOperation(value = "Salva uma categoria.")
+    @ApiOperation(value = "Salva uma categoria.")
     public ResponseEntity<Categoria> salvar(@RequestBody @Valid CategoriaDto categoriaInput, UriComponentsBuilder uriBuilder)  {
     	Optional<Categoria> categoria = service.buscarPorNome(categoriaInput.getNome()); 
 		if (categoria.isPresent()) {
@@ -79,7 +80,7 @@ public class CategoriaController {
     
 	@PutMapping("/{id}")
 	@Transactional
-    //@ApiOperation(value = "Altera uma categoria.")
+	@ApiOperation(value = "Altera uma categoria.")
 	public ResponseEntity<CategoriaDto> atualizar(@PathVariable Long id, @RequestBody @Valid CategoriaDto form) {
 		Optional<Categoria> optional = service.buscarPorId(id);
 		if (optional.isPresent()) {
