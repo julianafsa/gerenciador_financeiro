@@ -13,6 +13,8 @@ INSERT INTO categoria (nome, limite_mensal) VALUES
 
 INSERT INTO movimentacao (tipo, descricao, valor, categoria_fk, data_criacao) VALUES
 ('0', 'Supermercado', '1000.00', '1', '2021-12-05'),
+('0', 'Frigorífico', '250.00', '1', '2021-12-05'),
+('0', 'Bebidas', '950.00', '1', '2021-12-05'),
 ('0', 'Colégio Santo Agostinho', '2500.00', '2', '2021-12-06'),
 ('0', 'Cinema', '80.00', '3', '2021-12-01'),
 ('0', 'Visita Cristo Redentor', '100.00', '4', '2021-12-10'),

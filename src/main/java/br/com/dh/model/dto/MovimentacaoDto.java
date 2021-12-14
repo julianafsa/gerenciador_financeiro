@@ -25,8 +25,8 @@ public class MovimentacaoDto {
 	
 	private LocalDate dataCriacao = LocalDate.now();
 	
-//	@Min(value = 1)
-//	@NotBlank(message = "O id da categoria não pode ser vazio ou nulo")
+	@Min(value = 1)
+	@NotBlank(message = "O id da categoria não pode ser vazio ou nulo")
 	private String idCategoria;
 	
 	public MovimentacaoDto() {}
