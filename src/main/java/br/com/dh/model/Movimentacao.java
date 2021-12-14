@@ -24,6 +24,7 @@ public class Movimentacao {
 	@Column(name = "tipo", nullable = false)
 	private TipoMovimentacao tipo;
 	
+	//@NotNull @NotEmpty
 	private String descricao;
 	
 	private BigDecimal valor = BigDecimal.ZERO;
@@ -35,9 +36,6 @@ public class Movimentacao {
 	@JoinColumn(name = "categoria_fk")
 	private Categoria categoria;
 	
-	public Movimentacao() {
-	}
-
 	public Movimentacao(TipoMovimentacao tipo, String descricao, BigDecimal valor, Categoria categoria) {
 		this.tipo = tipo;
 		this.descricao = descricao;

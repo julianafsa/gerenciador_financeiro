@@ -19,9 +19,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.dh.model.Categoria;
 import br.com.dh.model.Movimentacao;
-import br.com.dh.model.dto.CategoriaDto;
 import br.com.dh.model.dto.MovimentacaoDto;
+import br.com.dh.services.CategoriaService;
 import br.com.dh.services.MovimentacaoService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 //@Api(tags = "Movimentação")
@@ -30,9 +31,12 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 public class MovimentacaoController {
 
     private MovimentacaoService service;
+    
+    private CategoriaService categoriaService;
 
-    public MovimentacaoController(MovimentacaoService service) {
+    public MovimentacaoController(MovimentacaoService service, CategoriaService categoriaService) {
         this.service = service;
+        this.categoriaService = categoriaService;
     }
 
     @GetMapping
@@ -64,30 +68,30 @@ public class MovimentacaoController {
 		return ResponseEntity.notFound().build();
 	}
     
-    /*@PostMapping
-    //@ApiOperation(value = "Salva uma categoria.")
-    public ResponseEntity<Categoria> salvar(@RequestBody @Valid CategoriaDto categoriaInput, UriComponentsBuilder uriBuilder)  {
-    	Optional<Categoria> categoria = service.buscarPorNome(categoriaInput.getNome()); 
+    @PostMapping
+    //@ApiOperation(value = "Salva uma movimentação.")
+    public ResponseEntity<Movimentacao> salvar(@RequestBody @Valid MovimentacaoDto input, UriComponentsBuilder uriBuilder)  {
+    	Optional<Categoria> categoria = categoriaService.buscarPorId(Long.parseLong(input.getIdCategoria())); 
 		if (categoria.isPresent()) {
-			System.out.println("Categoria " + categoriaInput.getNome() + " já está cadastrada.");
-			return ResponseEntity.badRequest().build();
+			System.out.println("Categoria " + input.getIdCategoria() + " não encontrada.");
+			return ResponseEntity.notFound().build();
 		}
     	
-		Categoria categoriaSalva = service.salvar(CategoriaDto.converter(categoriaInput));
-		URI uri = UriComponentsBuilder.fromPath("categoria").buildAndExpand(categoriaSalva.getId()).toUri();
-		return ResponseEntity.created(uri).body(categoriaSalva);
+		Movimentacao movimentacaoSalva = service.salvar(input.converter(categoria.get()));
+		URI uri = UriComponentsBuilder.fromPath("categoria").buildAndExpand(movimentacaoSalva.getId()).toUri();
+		return ResponseEntity.created(uri).body(movimentacaoSalva);			
     }
     
-	@PutMapping("/{id}")
+    @PutMapping("/{id}")
 	@Transactional
-    //@ApiOperation(value = "Altera uma categoria.")
-	public ResponseEntity<CategoriaDto> atualizar(@PathVariable Long id, @RequestBody @Valid CategoriaDto form) {
-		Optional<Categoria> optional = service.buscarPorId(id);
+    //@ApiOperation(value = "Altera uma movimentação.")
+	public ResponseEntity<MovimentacaoDto> atualizar(@PathVariable Long id, @RequestBody @Valid MovimentacaoDto form) {
+		Optional<Movimentacao> optional = service.buscarPorId(id);
 		if (optional.isPresent()) {
-			Categoria categoria = form.atualizar(id, service);
-			return ResponseEntity.ok(new CategoriaDto(categoria));
+			Movimentacao movimentacao = form.atualizar(id, service);
+			return ResponseEntity.ok(new MovimentacaoDto(movimentacao));
 		}
 		return ResponseEntity.notFound().build();
-	}*/
+	}
     
 }
