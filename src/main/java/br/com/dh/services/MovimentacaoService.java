@@ -15,7 +15,7 @@ public interface MovimentacaoService {
 
 	List<Movimentacao> buscarTodos();
 	Optional<Movimentacao> buscarPorId(Long id);
-	void editar(Movimentacao movimentacao);
+	Movimentacao editar(Movimentacao movimentacao);
 	void excluir(Long id);
 	Movimentacao salvar(Movimentacao movimentacao);
 	

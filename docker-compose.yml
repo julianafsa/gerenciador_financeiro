@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  db:
+   image: mysql
+   volumes:
+      - "dbdata:/var/lib/mysql"
+   container_name: db
+   environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=gerenciadordb
+      - MYSQL_USER=user_gerenciador
+      - MYSQL_PASSWORD=1234
+   healthcheck:
+    test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+    start_period: 60s
+   ports:
+      - 3306:3306
+   networks: 
+     - gerenciador_financeiro-network  
+  web:
+    build: .
+    container_name: gerenciador_financeiro-api
+    restart: on-failure    
+    ports:
+      - 8080:8080
+    environment: 
+      - DATABASE_HOST=db  
+      - DATABASE_USER=user_gerenciador
+      - DATABASE_NAME=gerenciadordb
+      - DATABASE_PORT=3306
+    networks: 
+      - gerenciador_financeiro-network
+    depends_on:
+     db:
+      condition: service_healthy   
+networks: 
+  gerenciador_financeiro-network:
+    driver: bridge
+volumes:
+   dbdata: 

@@ -39,17 +39,12 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 	}
 
 	@Override
-	public void editar(Movimentacao movimentacao) {
+	public Movimentacao editar(Movimentacao movimentacao) {
 		Movimentacao movimentacaoVelha = this.repository.findById(movimentacao.getId()).get();
-//		String nome = movimentacaoVelha.getNome();
-//		BigDecimal limiteMensal = movimentacaoVelha.getLimiteMensal();
-//		if (nome != null) {
-//			movimentacaoVelha.setNome(nome);
-//		}
-//		if (limiteMensal != null) {
-//			movimentacaoVelha.setLimiteMensal(limiteMensal);
-//		}
-		this.repository.save(movimentacaoVelha);
+		if (movimentacaoVelha != null) {
+			return this.repository.save(movimentacaoVelha);			
+		}
+		return null;
 	}
 
 	@Override
